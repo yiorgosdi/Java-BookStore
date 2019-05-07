@@ -72,12 +72,15 @@ public class Module2_Task7_thru10_IT {
 
 		@Test
 	  public void _task9() {
+			assertNotNull("Link, edit, did not work.", editPage);
 			h2_correct("Edit");
     }
 
 		@Test
 	  public void _task10() {
+			assertNotNull("Link, edit, did not work.", editPage);
 			h2_correct("Edit");
+			assertNotNull("Link, new, did not work.", newPage);
 			h2_correct("New");
     }
 
