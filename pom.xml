@@ -136,7 +136,7 @@
               <configuration>
                 <systemPropertyVariables>
                   <!-- Remember to deploy the app and start the server in advance -->
-                  <integration.base.url>http://localhost:8080</integration.base.url>
+                  <integration.base.url>http://localhost:8082</integration.base.url>
                 </systemPropertyVariables>
               </configuration>
             </execution>
