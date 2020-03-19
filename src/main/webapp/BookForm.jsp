@@ -15,20 +15,20 @@
 
 <div class="container">
 
-	<c:if test="${ myBook != null }" >
-		<form name="book_form" method="post" action="update" /> 
+	<c:if test="${myBook != null}">
+		<form name="book_form" method="post" action="update"> 
 	</c:if>
 
-	<c:if test="$ { myBook == null } "> 
-		<form name="book_form" method="post" action="insert" /> 
+	<c:if test="${myBook == null}"> 
+		<form name="book_form" method="post" action="insert"> 
 	</c:if>
     
     <h2>
        <c:if test="${myBook != null}">
-       	Edit Book Form
+	       	Edit Book Form
        </c:if> 
        <c:if test="${myBook == null}"> 
-       	New Book Form 
+	       	New Book Form 
        </c:if>
     </h2>
     
