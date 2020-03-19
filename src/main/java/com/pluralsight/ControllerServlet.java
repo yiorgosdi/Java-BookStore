@@ -14,35 +14,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.inject.Inject;
+
 /**
  * Servlet implementation class HelloWorld
  */
 
 public class ControllerServlet extends HttpServlet {
-		private static final long serialVersionUID = 1L;
-		private DBConnection dbConnection;
+	private static final long serialVersionUID = 1L;
+	private DBConnection dbConnection;
 
-		@Inject
-    private BookDAO bookDAO;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-
-    public void init() {
-			dbConnection = new DBConnection();
-			bookDAO = new BookDAO(dbConnection.getConnection());
-    }
-
-		public void destroy() {
-			dbConnection.disconnect();
-		}
-
-    public ControllerServlet() {
-        super();
-    }
+	@Inject
+	private BookDAO bookDAO;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
+	 */
+
+	public void init() {
+		dbConnection = new DBConnection();
+		bookDAO = new BookDAO(dbConnection.getConnection());
+	}
+
+	public void destroy() {
+		dbConnection.disconnect();
+	}
+
+	public ControllerServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getPathInfo();
@@ -114,41 +117,42 @@ public class ControllerServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		out.println("This is the doPost() method!");
 		doGet(request, response);
 	}
-	
-	
-	private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+
+	private void deleteBook(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int urlId = Integer.parseInt(request.getParameter("id"));
-	bookDAO.deleteBook(urlId); 
-	response.sendRedirect("list");			
+		bookDAO.deleteBook(urlId);
+		response.sendRedirect("list");
 	}
-	
-	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
-		int myId = Integer.parseInt(request.getParameter("id")); 
-		Book book = bookDAO.getBook(myId); 
-		RequestDispatcher myReqDis = request.getRequestDispatcher("/BookForm.jsp"); 
+
+	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int myId = Integer.parseInt(request.getParameter("id"));
+		Book book = bookDAO.getBook(myId);
+		RequestDispatcher myReqDis = request.getRequestDispatcher("/BookForm.jsp");
 		request.setAttribute("book", book);
 		myReqDis.forward(request, response);
 	}
-	
-	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+
+	private void updateBook(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		String title = request.getParameter("booktitle"); 
-		String author = request.getParameter("bookauthor"); 
-		String priceStr = request.getParameter("bookprice"); 
-		Book myBook = new Book(id, title, author, Float.parseFloat("price")); 
+		String title = request.getParameter("booktitle");
+		String author = request.getParameter("bookauthor");
+		String priceStr = request.getParameter("bookprice");
+		Book myBook = new Book(id, title, author, Float.parseFloat("price"));
 		bookDAO.updateBook(myBook);
-		response.sendRedirect("list"); 		
+		response.sendRedirect("list");
 	}
-	
-	
-	
 
 }

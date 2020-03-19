@@ -11,114 +11,115 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class BookDAO {
-    private Connection jdbcConnection;
-    public BookDAO(Connection connection)
-    {
-      jdbcConnection = connection;
-    }
+	private Connection jdbcConnection;
 
-    public Book getBook(int id) {
-      Book book = null;
-      String sql = "SELECT * FROM book WHERE id = ?";
+	public BookDAO(Connection connection) {
+		jdbcConnection = connection;
+	}
 
-      try {
-        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setInt(1, id);
+	public Book getBook(int id) {
+		Book book = null;
+		String sql = "SELECT * FROM book WHERE id = ?";
 
-        ResultSet resultSet = statement.executeQuery();
+		try {
+			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			statement.setInt(1, id);
 
-        if (resultSet.next()) {
-            String title = resultSet.getString("title");
-            String author = resultSet.getString("author");
-            float price = resultSet.getFloat("price");
+			ResultSet resultSet = statement.executeQuery();
 
-            book = new Book(id, title, author, price);
-        }
+			if (resultSet.next()) {
+				String title = resultSet.getString("title");
+				String author = resultSet.getString("author");
+				float price = resultSet.getFloat("price");
 
-        resultSet.close();
-        statement.close();
-      } catch (SQLException e) {
-          e.printStackTrace();
-      }
+				book = new Book(id, title, author, price);
+			}
 
-      return book;
-    }
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-    public ArrayList<Book> listAllBooks() {
-      ArrayList<Book> listBook = new ArrayList<>();
+		return book;
+	}
 
-      String sql = "SELECT * FROM book";
+	public ArrayList<Book> listAllBooks() {
+		ArrayList<Book> listBook = new ArrayList<>();
 
-		  try {
-			    Statement statement = jdbcConnection.createStatement();
+		String sql = "SELECT * FROM book";
 
-	        ResultSet resultSet = statement.executeQuery(sql);
+		try {
+			Statement statement = jdbcConnection.createStatement();
 
-	        while (resultSet.next()) {
-              int id = resultSet.getInt("id");
-	            String title = resultSet.getString("title");
-	            String author = resultSet.getString("author");
-	            float price = resultSet.getFloat("price");
+			ResultSet resultSet = statement.executeQuery(sql);
 
-	            Book book = new Book(id, title, author, price);
-	            listBook.add(book);
-	        }
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id");
+				String title = resultSet.getString("title");
+				String author = resultSet.getString("author");
+				float price = resultSet.getFloat("price");
 
-	        resultSet.close();
-	        statement.close();
-  		} catch (SQLException e) {
-  			e.printStackTrace();
-  		}
-        return listBook;
-    }
+				Book book = new Book(id, title, author, price);
+				listBook.add(book);
+			}
 
-    public boolean insertBook(Book book)  {
-        String sql = "INSERT INTO book (title, author, price) VALUES (?, ?, ?)";
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listBook;
+	}
 
-        try {
-	        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-	        statement.setString(1, book.getTitle());
-	        statement.setString(2, book.getAuthor());
-	        statement.setFloat(3, book.getPrice());
+	public boolean insertBook(Book book) {
+		String sql = "INSERT INTO book (title, author, price) VALUES (?, ?, ?)";
 
-	        boolean rowInserted = statement.executeUpdate() > 0;
-	        statement.close();
-	        return rowInserted;
-        } catch (SQLException e) {
-        		e.printStackTrace();
-        }
+		try {
+			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			statement.setString(1, book.getTitle());
+			statement.setString(2, book.getAuthor());
+			statement.setFloat(3, book.getPrice());
 
-        return false;
-    }
-    
-    public void deleteBook(int id) {
-    	try {
-			PreparedStatement  pState = jdbcConnection.prepareStatement("DELETE FROM book WHERE id = ?");
-			pState.setInt(1, id); 
+			boolean rowInserted = statement.executeUpdate() > 0;
+			statement.close();
+			return rowInserted;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public void deleteBook(int id) {
+		try {
+			PreparedStatement pState = jdbcConnection.prepareStatement("DELETE FROM book WHERE id = ?");
+			pState.setInt(1, id);
 			pState.executeUpdate();
 			pState.close();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-    	
-    }
-    
-    public void updateBook(Book book) { 
-    	try {
-			PreparedStatement pState = jdbcConnection.prepareStatement("UPDATE book SET title = ?, author = ?, price = ? WHERE id = ?");
+		}
+
+	}
+
+	public void updateBook(Book book) {
+		try {
+			PreparedStatement pState = jdbcConnection
+					.prepareStatement("UPDATE book SET title = ?, author = ?, price = ? WHERE id = ?");
 			pState.setString(1, book.getTitle());
 			pState.setString(2, book.getAuthor());
 			pState.setFloat(3, book.getPrice());
 			pState.setInt(4, book.getId());
-			pState.executeUpdate(); 
+			pState.executeUpdate();
 			pState.close();
-    	} catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    }
-    
+
+	}
+
 }
