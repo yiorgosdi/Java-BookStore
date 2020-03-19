@@ -53,21 +53,18 @@ public class ControllerServlet extends HttpServlet {
 				case "/admin":
 					 showBookAdmin(request, response);
            break;
-			  case "/new":
+			 case "/new":
 					showNewForm(request, response);
           break;
-				case "/insert":
+			case "/insert":
 					insertBook(request, response);
           break;
-          
-				case "/delete": 
+          	case "/delete": 
 					deleteBook(request, response); 
 		break; 
-		
-				case "/edit": 
+		    case "/edit": 
 					showEditForm(request, response);
-		break; 
-          
+		break;        
         default:
 				   listBooks(request, response);
            break;
