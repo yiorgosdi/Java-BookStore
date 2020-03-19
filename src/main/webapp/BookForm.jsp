@@ -14,15 +14,13 @@
 	</ul>
 
 <div class="container">
-
 	<c:if test="${myBook != null}">
 		<form name="book_form" method="post" action="update"> 
 	</c:if>
-
 	<c:if test="${myBook == null}"> 
 		<form name="book_form" method="post" action="insert"> 
 	</c:if>
-    
+  
     <h2>
        <c:if test="${myBook != null}">
 	       	Edit Book Form
@@ -33,7 +31,7 @@
     </h2>
     
        <c:if test="${myBook != null }">
-       <input type="hidden" name="id" value="${myBook.id}" /> 
+       <input type="hidden" name="id" value="<c:out value="${myBook.id}"/>" />
        </c:if>
         
 	   <p><label>Title:</label>
