@@ -44,30 +44,32 @@ public class ControllerServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getPathInfo();
 
 		try {
-			switch(action) {
-				case "/admin":
-					 showBookAdmin(request, response);
-           break;
-			 case "/new":
-					showNewForm(request, response);
-          break;
+			switch (action) {
+			case "/admin":
+				showBookAdmin(request, response);
+				break;
+			case "/new":
+				showNewForm(request, response);
+				break;
 			case "/insert":
-					insertBook(request, response);
-          break;
-          	case "/delete": 
-					deleteBook(request, response); 
-		break; 
-		    case "/edit": 
-					showEditForm(request, response);
-		break;        
-        default:
-				   listBooks(request, response);
-           break;
+				insertBook(request, response);
+				break;
+			case "/delete":
+				deleteBook(request, response);
+				break;
+			case "/edit":
+				showEditForm(request, response);
+				break;
+			case "/update":
+				updateBook(request, response);
+				break;
+			default:
+				listBooks(request, response);
+				break;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -119,16 +121,13 @@ public class ControllerServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("This is the doPost() method!");
 		doGet(request, response);
-
 	}
 	
 	
 	private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		int urlId = Integer.parseInt(request.getParameter("id"));
 	bookDAO.deleteBook(urlId); 
-	response.sendRedirect("list");
-	
-		
+	response.sendRedirect("list");			
 	}
 	
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
@@ -137,9 +136,18 @@ public class ControllerServlet extends HttpServlet {
 		RequestDispatcher myReqDis = request.getRequestDispatcher("/BookForm.jsp"); 
 		request.setAttribute("book", book);
 		myReqDis.forward(request, response);
-		
-		
 	}
+	
+	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+		int id = Integer.parseInt(request.getParameter("id"));
+		String title = request.getParameter("booktitle"); 
+		String author = request.getParameter("bookauthor"); 
+		String priceStr = request.getParameter("bookprice"); 
+		Book myBook = new Book(id, title, author, Float.parseFloat("price")); 
+		bookDAO.updateBook(myBook);
+		response.sendRedirect("list"); 		
+	}
+	
 	
 	
 
